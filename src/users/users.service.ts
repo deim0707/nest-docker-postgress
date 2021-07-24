@@ -1,4 +1,4 @@
 import { Injectable } from '@nestjs/common';
 
-@Injectable()
+@Injectable() // внедрение Сервиса в Контроллер - инъекция
 export class UsersService {}
