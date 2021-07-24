@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 // не забываем установить локально на машине postgres. к которому в т.ч. идёт pgAdmin4
@@ -19,8 +17,8 @@ const sequelizeModule = SequelizeModule.forRoot({
 @Module(
   // регистрируем, что использует модуль. сервисы(провайдеры), контроллеры и т.д.
   {
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [],
+    providers: [],
     imports: [sequelizeModule],
   },
 )
