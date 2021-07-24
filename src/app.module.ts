@@ -1,17 +1,9 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 // не забываем установить локально на машине postgres. к которому в т.ч. идёт pgAdmin4
-const sequelizeModule = SequelizeModule.forRoot({
-  dialect: 'postgres',
-  host: 'localhost',
-  port: 5432, //порт по умолчанию у Постграсса
-  username: 'postgres',
-  password: 'root123',
-  database: 'nest-course',
-  models: [],
-  autoLoadModels: true, // с этим флагом севелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
-});
 
 // декораторы добавляет классу или функции новый функционал
 @Module(
@@ -19,7 +11,21 @@ const sequelizeModule = SequelizeModule.forRoot({
   {
     controllers: [],
     providers: [],
-    imports: [sequelizeModule],
+    imports: [
+      // process.env.NODE_ENV задаём при запуске в скрипте package
+      ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+      SequelizeModule.forRoot({
+        dialect: 'postgres',
+        host: process.env.POSTGRES_HOST,
+        port: Number(process.env.POSTGRES_PORT), //порт по умолчанию у Постграсса
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        models: [],
+        autoLoadModels: true, // с этим флагом севелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
+      }),
+      UsersModule,
+    ],
   },
 )
 export class AppModule {}
