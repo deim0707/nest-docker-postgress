@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
 import { User } from './users/users.model';
+import { Role } from './roles/roles.model';
 
 // не забываем установить локально на машине postgres. к которому в т.ч. идёт pgAdmin4
 
@@ -22,10 +24,11 @@ import { User } from './users/users.model';
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        models: [User], //  регистрируем модель для БД
+        models: [User, Role], //  регистрируем модель для БД
         autoLoadModels: true, // с этим флагом севелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
       }),
       UsersModule,
+      RolesModule,
     ],
   },
 )
