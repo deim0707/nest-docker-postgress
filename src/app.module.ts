@@ -22,7 +22,7 @@ import { User } from './users/users.model';
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        models: [User],
+        models: [User], //  регистрируем модель для БД
         autoLoadModels: true, // с этим флагом севелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
       }),
       UsersModule,

@@ -1,6 +1,6 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-// какие поля будут нужны для создания экземпляра этого класса
+// какие поля будут нужны для СОЗДАНИЯ экземпляра этого класса
 interface UserCreationAttributes {
   email: string;
   password: string;
@@ -8,6 +8,7 @@ interface UserCreationAttributes {
 
 //декоратор делает таблицей в БД
 @Table({ tableName: 'users' })
+// первый интерфейс переданный в дженерик - какие поля присущи сузности. второй интерфейс - какие поля нужны при создании
 export class User extends Model<User, UserCreationAttributes> {
   // декоратор делает колонками в таблице
   @Column({
