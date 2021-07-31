@@ -25,7 +25,7 @@ async function startApp() {
 }
 
 startApp();
-// https://youtu.be/dDeWWQWMM-Y?list=LL&t=2118
+// https://youtu.be/dDeWWQWMM-Y?t=2699
 
 // nest CLI
 // nest generate module NAME
