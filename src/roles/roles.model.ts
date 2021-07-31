@@ -1,5 +1,13 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '../users/users.model';
+import { UserRoles } from './user-roles.model';
 
 // какие поля будут нужны для СОЗДАНИЯ экземпляра этого класса
 interface RoleCreationAttributes {
@@ -45,4 +53,9 @@ export class Role extends Model<Role, RoleCreationAttributes> {
     allowNull: false,
   })
   description: string;
+
+  // реализуем связь между таблицей Пользователей и Ролей. связь много ко многим
+  // первый аргумент: с какой сущностью связываем. второй: через какую таблицу это делаем
+  @BelongsToMany(() => User, () => UserRoles)
+  users: User[];
 }
