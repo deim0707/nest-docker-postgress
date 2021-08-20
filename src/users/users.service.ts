@@ -15,19 +15,24 @@ export class UsersService {
     private userRepository: typeof User,
     private rolesServices: RolesService,
   ) {}
+
   async createUser(dto: CreateUserDto) {
-    // тут мы обращаемся к БД, поэтому await
-    const user = await this.userRepository.create(dto);
-    // перед присваиванием роли - получаем её из БД
-    const role = await this.rolesServices.getRoleByValue('USER');
-    // указываем, что роль принадлежит пользователю используя метод set
-    // он позволяет перезаписать и сразу обновить поле
-    await user.$set('roles', [role.id]);
-    return user;
+    try {
+      // тут мы обращаемся к БД, поэтому await
+      const user = await this.userRepository.create(dto);
+      // перед присваиванием роли - получаем её из БД
+      const role = await this.rolesServices.getRoleByValue('USER');
+      // указываем, что роль принадлежит пользователю используя метод set
+      // он позволяет перезаписать и сразу обновить поле
+      await user.$set('roles', [role.id]);
+      return user;
+    } catch ({ errors }) {
+      console.error(errors);
+    }
   }
 
   //создали функцию, которая сработает на ГЕТ по пути .../api/users
-  // опция { include: { all: true } } говорит, что нужно возвращать все поля с которыми связан пользователь
+  // опция { include: { all: true } } говорит, что нужно возвращать все поля с которыми связан пользователь. в т.ч. покажет роли пользователя
   async getAllUsers() {
     const users = await this.userRepository.findAll({ include: { all: true } });
     return users;

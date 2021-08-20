@@ -26,7 +26,7 @@ import { UserRoles } from './roles/user-roles.model';
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
         models: [User, Role, UserRoles], //  регистрируем модель для БД
-        autoLoadModels: true, // с этим флагом севелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
+        autoLoadModels: true, // с этим флагом секвелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
       }),
       UsersModule,
       RolesModule,
