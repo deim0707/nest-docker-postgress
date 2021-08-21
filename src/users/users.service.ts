@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
 
@@ -25,6 +25,7 @@ export class UsersService {
       // указываем, что роль принадлежит пользователю используя метод set
       // он позволяет перезаписать и сразу обновить поле
       await user.$set('roles', [role.id]);
+      user.roles = [role]; // какой-то костыль, чтобы роли записывались не только в БД, но и в токен при создании пользователя
       return user;
     } catch ({ errors }) {
       console.error(errors);
@@ -36,5 +37,13 @@ export class UsersService {
   async getAllUsers() {
     const users = await this.userRepository.findAll({ include: { all: true } });
     return users;
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await this.userRepository.findOne({
+      where: { email: email },
+      include: { all: true },
+    });
+    return user;
   }
 }
