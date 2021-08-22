@@ -22,7 +22,7 @@ export class UsersService {
       // тут мы обращаемся к БД, поэтому await
       const user = await this.userRepository.create(dto);
       // перед присваиванием роли - получаем её из БД
-      const role = await this.rolesServices.getRoleByValue('USER');
+      const role = await this.rolesServices.getRoleByValue('ADMIN');
       // указываем, что роль принадлежит пользователю используя метод set
       // он позволяет перезаписать и сразу обновить поле
       await user.$set('roles', [role.id]);

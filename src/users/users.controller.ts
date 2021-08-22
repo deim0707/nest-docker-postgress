@@ -3,7 +3,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './users.model';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../auth/roles-auth.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Users, Пользователи')
 //контроллер содержит ендпоинты. дёргает сервис где находится логика
@@ -21,7 +22,10 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Получение всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
-  @UseGuards(JwtAuthGuard) // написаный нами гвард, который предотвращает использования незалогененых пользователей
+  // @UseGuards(JwtAuthGuard) // написаный нами гвард, который предотвращает использования незалогененых пользователей
+  // наш самодельный декоратор в котором указываем для каких ролей будет доступен ендпоинт:
+  @Roles('ADMINss')
+  @UseGuards(RolesGuard)
   @Get()
   getAll() {
     return this.usersService.getAllUsers();
