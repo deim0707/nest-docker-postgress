@@ -17,6 +17,7 @@ export class UsersService {
   ) {}
 
   async createUser(dto: CreateUserDto) {
+    // try-catch я добавил сам, возможно тут неуместно его использовать. хотел отлавливать ошибку, когда создают пользователя с одинаковой почтой. позже в Auth при регстрации ползователя стали прокидывать ошибку со статусом
     try {
       // тут мы обращаемся к БД, поэтому await
       const user = await this.userRepository.create(dto);

@@ -17,7 +17,7 @@ interface UserCreationAttributes {
 
 //декоратор делает таблицей в БД
 @Table({ tableName: 'users' })
-// первый интерфейс переданный в дженерик - какие поля присущи сузности. второй интерфейс - какие поля нужны при создании
+// первый интерфейс переданный в дженерик - какие поля присущи сущности. второй интерфейс - какие поля нужны при создании
 export class User extends Model<User, UserCreationAttributes> {
   //@ApiProperty -  описываем поля для свагера. будут отображаться в примере Ответа
   @ApiProperty({
@@ -29,7 +29,7 @@ export class User extends Model<User, UserCreationAttributes> {
     type: DataType.INTEGER, // тип поля - числовой
     unique: true, // поле всегда ункиально
     autoIncrement: true, // с каждой записью будет инкрементироваться (1,2,3,4...)
-    primaryKey: true, // первичный ключ
+    primaryKey: true, // первичный ключ // что это значит???
   })
   id: number;
 

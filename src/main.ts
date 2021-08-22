@@ -3,7 +3,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 // точка входа в приложение
-
 async function startApp() {
   const PORT = process.env.PORT;
   // экземпляр приложения
