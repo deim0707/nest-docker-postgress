@@ -18,6 +18,9 @@ async function startApp() {
   const documentSwagger = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('/api/swagger', app, documentSwagger);
 
+  // так мы можем использовать гвард (предоставлять что-то только авторизированным пользователям) глобально по приложению
+  // app.useGlobalGuards(JwtAuthGuard);
+
   await app.listen(PORT, () =>
     console.log('is server started on port: ', PORT),
   );
