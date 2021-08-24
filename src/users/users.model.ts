@@ -69,7 +69,8 @@ export class User extends Model<User, UserCreationAttributes> {
     description: 'Причина блокировки',
   })
   @Column({
-    type: DataType.INTEGER,
+    // ранее тут было прописано INTEGER. для изменения в БД на стринг необходима миграция
+    type: DataType.STRING,
     allowNull: true,
   })
   banReason: string;

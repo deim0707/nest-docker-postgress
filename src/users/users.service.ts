@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
+import { AddRoleDto } from './dto/add-role.dto';
+import { BanUserDto } from './dto/ban-user.dto';
 
 //ниже происходит та сама ИНЪЕКЦИЯ Сервиса в Контроллер. благодаря этому нам не нужено создавать объект из класса Сервиса
 @Injectable() // внедрение Сервиса в Контроллер - инъекция
@@ -45,6 +47,40 @@ export class UsersService {
       where: { email: email },
       include: { all: true },
     });
+    return user;
+  }
+
+  async addRole(dto: AddRoleDto) {
+    //получаем пользователя по айди
+    //findByPk find by primary key
+    const user = await this.userRepository.findByPk(dto.userId);
+    // получаем роль из базы данных
+    const role = await this.rolesServices.getRoleByValue(dto.value);
+    // если роль и пользователь найдены в БД, то добавляем пользователю роль
+    if (role && user) {
+      // первый ключ Поле, которое добавляем. второй - его значение
+      // ранее мы использовали метод set. он инициализирует поля. с помощью add мы добавляем значение к проинициализированному полю
+      await user.$add('role', role.id);
+      return dto;
+    }
+    throw new HttpException(
+      'Пользователь или роль не найдены',
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  async ban(dto: BanUserDto) {
+    //получаем пользователя по айди
+    //findByPk find by primary key
+    const user = await this.userRepository.findByPk(dto.userId);
+    if (!user) {
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+    }
+    // перезаписываем поле
+    user.isBanned = true;
+    user.banReason = dto.banReason;
+    // функция save обновит значения в базе данных
+    await user.save();
     return user;
   }
 }
