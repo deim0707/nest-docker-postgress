@@ -24,7 +24,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: [User] })
   // @UseGuards(JwtAuthGuard) // написаный нами гвард, который предотвращает использования незалогененых пользователей
   // наш самодельный декоратор в котором указываем для каких ролей будет доступен ендпоинт:
-  @Roles('ADMINss')
+  @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Get()
   getAll() {
