@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from './pipes/validation.pipe';
 
 // точка входа в приложение
 async function startApp() {
@@ -19,7 +20,10 @@ async function startApp() {
   SwaggerModule.setup('/api/swagger', app, documentSwagger);
 
   // так мы можем использовать гвард (предоставлять что-то только авторизированным пользователям) глобально по приложению
-  // app.useGlobalGuards(JwtAuthGuard);
+  // app.useGlobalGuards(JwtAuthGuard);\
+
+  // так мы можем делать глобальный пайпы
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(PORT, () =>
     console.log('is server started on port: ', PORT),
@@ -27,7 +31,7 @@ async function startApp() {
 }
 
 startApp();
-// https://youtu.be/dDeWWQWMM-Y?t=4403
+// https://youtu.be/dDeWWQWMM-Y?t=4909
 
 // nest CLI
 // nest generate module NAME

@@ -17,6 +17,8 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Создание пользователя' }) // @ApiOperation позволяет добавлять документацию в сваггер
   @ApiResponse({ status: 200, type: User }) // какой статус и данные вернёт. // не забываем задокументировать в файле модели: { User } from './users.model';
+  // делаем валидацию пайпом
+  // @UsePipes(ValidationPipe)
   @Post()
   create(@Body() userDto: CreateUserDto) {
     return this.usersService.createUser(userDto);
