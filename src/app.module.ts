@@ -1,12 +1,17 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { RolesModule } from './roles/roles.module';
 import { User } from './users/users.model';
 import { Role } from './roles/roles.model';
+import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
 import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module';
+import { Post } from './posts/post.modele';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 // не забываем установить локально на машине postgres. к которому в т.ч. идёт pgAdmin4
 
@@ -19,6 +24,10 @@ import { AuthModule } from './auth/auth.module';
     imports: [
       // process.env.NODE_ENV задаём при запуске в скрипте package
       ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
+      // учим сервер раздавать статику. в нашем случае он будет возвращать по пути картику картинку в браузере
+      ServeStaticModule.forRoot({
+        rootPath: path.resolve(__dirname, 'static'),
+      }),
       // настройка БД, т.е. ОРМ (sequelize) - системы, при помощи которой работают с БД
       SequelizeModule.forRoot({
         dialect: 'postgres',
@@ -27,12 +36,14 @@ import { AuthModule } from './auth/auth.module';
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        models: [User, Role, UserRoles], //  регистрируем модель для БД
+        models: [User, Role, UserRoles, Post], //  регистрируем модель для БД
         autoLoadModels: true, // с этим флагом секвелайз создаёт таблицы в БД на основании моделей, что мы здесь создаём
       }),
       UsersModule,
       RolesModule,
       AuthModule,
+      PostsModule,
+      FilesModule,
     ],
   },
 )

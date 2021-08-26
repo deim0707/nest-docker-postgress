@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { UserRoles } from '../roles/user-roles.model';
 import { User } from './users.model';
 import { Role } from '../roles/roles.model';
+import { Post } from '../posts/post.modele';
 import { RolesModule } from '../roles/roles.module';
 import { AuthModule } from '../auth/auth.module';
 
@@ -13,7 +14,7 @@ import { AuthModule } from '../auth/auth.module';
   providers: [UsersService],
   imports: [
     // ниже добавили используемые в модуле Модели
-    SequelizeModule.forFeature([User, Role, UserRoles]),
+    SequelizeModule.forFeature([User, Role, UserRoles, Post]),
     RolesModule, // чтобы получить возможность импортировать здесь модуль (откуда нам нужен Сервис) - добавляем его в Экспорты в этом модуле
     forwardRef(() => AuthModule), // forwardRef - костыль (?) от циклической зависимости
   ],
