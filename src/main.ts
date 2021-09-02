@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { ValidationPipe } from './pipes/validation.pipe';
 
 // точка входа в приложение
 async function startApp() {
@@ -22,8 +21,8 @@ async function startApp() {
   // так мы можем использовать гвард (предоставлять что-то только авторизированным пользователям) глобально по приложению
   // app.useGlobalGuards(JwtAuthGuard);\
 
-  // так мы можем делать глобальный пайпы
-  app.useGlobalPipes(new ValidationPipe());
+  // так мы можем делать глобальный пайпы // в моём случае из-за него перестал работать getRole
+  // app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(PORT, () =>
     console.log('is server started on port: ', PORT),
